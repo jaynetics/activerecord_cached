@@ -1,0 +1,72 @@
+PATH
+  remote: .
+  specs:
+    activerecord_cached (1.0.0)
+      activerecord (>= 6.0)
+      activesupport (>= 6.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (7.1.2)
+      activesupport (= 7.1.2)
+    activerecord (7.1.2)
+      activemodel (= 7.1.2)
+      activesupport (= 7.1.2)
+      timeout (>= 0.4.0)
+    activesupport (7.1.2)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      mutex_m
+      tzinfo (~> 2.0)
+    base64 (0.2.0)
+    bigdecimal (3.1.5)
+    concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
+    diff-lcs (1.5.0)
+    drb (2.2.0)
+      ruby2_keywords
+    i18n (1.14.1)
+      concurrent-ruby (~> 1.0)
+    mini_portile2 (2.8.5)
+    minitest (5.21.1)
+    mutex_m (0.2.0)
+    rake (13.1.0)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.6)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.1)
+    ruby2_keywords (0.0.5)
+    sqlite3 (1.7.0)
+      mini_portile2 (~> 2.8.0)
+    sqlite3 (1.7.0-arm64-darwin)
+    timeout (0.4.1)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+
+PLATFORMS
+  arm64-darwin-22
+  ruby
+
+DEPENDENCIES
+  activerecord_cached!
+  rake (~> 13.0)
+  rspec (~> 3.0)
+  sqlite3
+
+BUNDLED WITH
+   2.5.5
