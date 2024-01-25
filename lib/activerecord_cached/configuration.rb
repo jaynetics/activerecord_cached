@@ -47,7 +47,7 @@ module ActiveRecordCached
 
     store.singleton_class.prepend(Module.new do
       def prune(...)
-        ActiveRecordCached.send(:warn_max_total_bytes_exceeded)
+        ActiveRecordCached.send(:warn_max_total_bytes_exceeded, @max_size)
         super
       end
     end)

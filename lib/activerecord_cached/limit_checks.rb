@@ -10,8 +10,8 @@ module ActiveRecordCached
     end
   end
 
-  def warn_max_total_bytes_exceeded
-    warn_limit_reached("Store size >= #{max_total_bytes} max_total_bytes")
+  def warn_max_total_bytes_exceeded(store_size = nil)
+    warn_limit_reached("Store size >= #{store_size || max_total_bytes} max_total_bytes")
   end
 
   def warn_limit_reached(info)

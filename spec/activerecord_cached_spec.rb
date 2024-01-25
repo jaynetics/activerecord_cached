@@ -183,6 +183,14 @@ RSpec.describe ActiveRecordCached do
       ActiveRecordCached.max_bytes = old_max
     end
 
+    it 'warns if the MemoryStore needs to do a purge' do
+      old_store = ActiveRecordCached.cache_store
+      ActiveRecordCached.cache_store = ActiveSupport::Cache::MemoryStore.new({ size: 1 })
+      expect { Pizza.cached_pluck(:name) }.to output(/>= 1 max_total_bytes/).to_stderr
+    ensure
+      ActiveRecordCached.cache_store = old_store
+    end
+
     it 'calls the custom handler' do
       old_handler = ActiveRecordCached.on_limit_reached
       arr = []
