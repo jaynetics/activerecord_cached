@@ -1,3 +1,6 @@
+[![Gem Version](https://badge.fury.io/rb/activerecord_cached.svg)](http://badge.fury.io/rb/activerecord_cached)
+[![Build Status](https://github.com/jaynetics/activerecord_cached/actions/workflows/main.yml/badge.svg)](https://github.com/jaynetics/activerecord_cached/actions)
+
 # ActiveRecordCached
 
 This gem adds methods to cache small amounts of ActiveRecord data in RAM, Redis, or other stores.
