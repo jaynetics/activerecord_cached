@@ -3,7 +3,7 @@
 RSpec.describe ActiveRecordCached do
   let!(:record) { Pizza.create!(name: 'Funghi') }
 
-  describe 'CRUDCallbacks' do
+  describe 'ActiveRecord::Base.after_commit callback' do
     it 'clears cached values after create' do
       expect { Pizza.create!(name: 'Spinaci') }
         .to change { Pizza.cached_pluck(:name) }.from(['Funghi']).to(['Funghi', 'Spinaci'])
@@ -50,6 +50,35 @@ RSpec.describe ActiveRecordCached do
     it 'clears cached values after update_all on relations' do
       expect { Pizza.where(id: record.id).update_all(name: 'Speciale') }
         .to change { Pizza.cached_pluck(:name) }.from(['Funghi']).to(['Speciale'])
+    end
+  end
+
+  describe '::log_model_cache_key' do
+    def pizza_keys
+      ActiveRecordCached.send(:fetch_cache_keys_per_model)[Pizza]&.keys&.sort || []
+    end
+
+    require 'timeout'
+    it 'is parallelism-safe with memory store' do
+      expect(ActiveRecordCached.cache_store).to receive(:write).at_least(:once).and_wrap_original do |orig, *args|
+        sleep 0.001
+        orig.call(*args)
+      end
+      (0..9).map { |i| Thread.new { ActiveRecordCached.send(:log_model_cache_key, Pizza, i) } }
+      Timeout.timeout(2) { sleep 0.1 until pizza_keys == [*0..9] }
+    rescue Timeout::Error
+      expect(pizza_keys).to eq [*0..9]
+    end
+
+    it 'is parallelism-safe with redis', redis: true do
+      expect(ActiveRecordCached.cache_store).to receive(:write).at_least(:once).and_wrap_original do |orig, *args|
+        sleep 0.001
+        orig.call(*args)
+      end
+      (0..9).map { |i| Thread.new { ActiveRecordCached.send(:log_model_cache_key, Pizza, i) } }
+      Timeout.timeout(2) { sleep 0.1 until pizza_keys == [*0..9] }
+    rescue Timeout::Error
+      expect(pizza_keys).to eq [*0..9]
     end
   end
 
@@ -163,5 +192,11 @@ RSpec.describe ActiveRecordCached do
     ensure
       ActiveRecordCached.on_limit_reached = old_handler
     end
+  end
+
+  it 'can cache with redis' do
+    expect(ActiveRecordCached).to receive(:query_db).once.and_call_original
+    expect(Pizza.cached_count).to eq 1
+    expect(Pizza.cached_count).to eq 1
   end
 end

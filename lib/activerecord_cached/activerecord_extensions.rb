@@ -29,13 +29,8 @@ module ActiveRecordCached
   ActiveRecord::Base.singleton_class.prepend BaseExtension
   ActiveRecord::Relation.prepend RelationExtension
 
-  # bust cache on individual record changes - this module is included
-  # automatically into models that use cached methods.
-  module CRUDCallbacks
-    def self.included(base)
-      base.after_commit { self.class.clear_cached_values }
-    end
-  end
+  # bust cache on individual record changes
+  ActiveRecord::Base.after_commit { self.class.clear_cached_values }
 
   # bust cache on mass operations
   module MassOperationWrapper

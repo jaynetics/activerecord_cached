@@ -10,7 +10,9 @@ module ActiveRecordCached
   end
 
   def cache_store=(val)
-    val.is_a?(ActiveSupport::Cache::Store) || raise(ArgumentError, 'pass an ActiveSupport::Cache::Store')
+    val.is_a?(ActiveSupport::Cache::MemoryStore) ||
+      val.is_a?(ActiveSupport::Cache::RedisCacheStore) ||
+      raise(ArgumentError, 'pass a MemoryStore or RedisCacheStore')
     @cache_store = store_with_limit_warning(val)
   end
 
